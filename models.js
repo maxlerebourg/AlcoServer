@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 import config from './config.js';
 
-const sequelize = new Sequelize('mysql://root:' + config.mdp + '@127.0.0.1:3306/' + config.db);
+const sequelize = new Sequelize(`mysql://${config.userDB}:${config.mdp}@127.0.0.1:3306/${config.db}`);
 sequelize.authenticate();
 
 const Op = Sequelize.Op;
