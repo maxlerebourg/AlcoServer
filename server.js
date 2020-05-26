@@ -20,6 +20,9 @@ async function init () {
 		port: 3000,
 		host: config.url,
 		routes: {
+			payload: {
+				multipart: true,
+			},
 			cors: {
 				origin: [
 					'*'
