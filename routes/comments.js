@@ -8,7 +8,7 @@ const validateId = Joi.object({ id: Joi.number().required() });
 const comments = [
 	{
 		method: 'GET',
-		path: '/comment/game/{id}',
+		path: '/comments/game/{id}',
 		handler: getGameComment,
 		options: {
 			auth: false,

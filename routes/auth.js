@@ -4,7 +4,7 @@ import { login, register, updateNotificationToken } from '../controllers/auth.js
 const auth = [
 	{
 		method: 'POST',
-		path: '/login',
+		path: '/signin',
 		handler: login,
 		options: {
 			auth: false,
@@ -18,7 +18,7 @@ const auth = [
 	},
 	{
 		method: 'POST',
-		path: '/register',
+		path: '/signup',
 		handler: register,
 		options: {
 			auth: false,
@@ -32,6 +32,18 @@ const auth = [
 				}),
 			},
 		},
+	},
+	{
+		method: 'POST',
+		path: '/login',
+		handler: login,
+		options: { auth: false, payload: { multipart: true} },
+	},
+	{
+		method: 'POST',
+		path: '/register',
+		handler: register,
+		options: { auth: false },
 	},
 	{
 		method: 'GET',
