@@ -1,10 +1,11 @@
 import Hapi from '@hapi/hapi';
 import jwt from 'hapi-auth-jwt2';
+import config from './config.js';
+import { User } from './models.js';
+
 import games from './routes/games.js';
 import comments from './routes/comments.js';
 import auth from './routes/auth.js';
-import config from './config.js';
-import { User } from './models.js';
 
 const validate = async function (decoded) {
 	const user = await User.findByPk(decoded);
@@ -17,7 +18,7 @@ const validate = async function (decoded) {
 
 async function init () {
 	const server = new Hapi.server({
-		port: 3000,
+		port: 3001,
 		host: config.url,
 		routes: {
 			cors: {

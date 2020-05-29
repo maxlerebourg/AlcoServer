@@ -1,54 +1,60 @@
-import { Category, Comment, Game, Op, sequelize } from '../models.js'
-import { notifyAdmin, notifyEveryone } from '../utils/notification.js';
+import { Category, Game, Op, sequelize } from '../models.js'
+import { notifyEveryone } from '../utils/notification.js';
+import { validateCategory } from '../utils/schema.js';
 
-const includeComment = {
-	required: false,
-	model: Comment,
-	attributes: [
-		[Comment.sequelize.fn('AVG', Comment.sequelize.col('rate')), 'rate'],
-		[Comment.sequelize.fn('COUNT', Comment.sequelize.col('rate')), 'comments'],
-	],
-};
-
-async function getGamesByCategories(req, res) {
-	const games = await Category.findAll({
-		include: [{
-			model: Game,
-			where: {visible: true},
-			include: includeComment,
-		}],
-		order: [[sequelize.literal('RAND()')]],
-		group: ['gameId', 'games.id'],
-	});
-	let news = await Game.findAll({
-		where: {[Op.or]: [{visible: false}, {updatedAt: {[Op.gte]:new Date().getTime() - 86400000 * 7}}]},
-		order: [['createdAt', 'DESC']],
-		include: includeComment,
-		group: ['gameId', 'id'],
-	});
-	let twoPlayer = await Game.findAll({
-		where: {multiplayer: 2, visible: true},
-		order: [['createdAt', 'DESC']],
-		include: includeComment,
-		group: ['gameId', 'id'],
-	});
-	return res.response([
-		{ id: 100, name: "Nouveautés", games: news },
-		...games,
-		{ id: 101, name: "Deux joueurs", games: twoPlayer },
-	]);
-}
-
-async function getGamesBySearch(req, res) {
+async function getSearchGames(search) {
 	return Game.findAll({
 		where: {
-			name: sequelize.where(sequelize.fn('LOWER', sequelize.col('name')), 'LIKE', `%${req.params.name}%`),
-			visible: true,
+			name: sequelize.where(sequelize.col('name'), 'ILIKE', `%${search}%`),
+			status: '200',
 		},
-		include: includeComment,
-		group: ['gameId', 'id'],
 		order: ['name']
 	});
+}
+
+async function getCategoryGames(categoryId) {
+	return await Game.findAll({
+		where: { status: '200', categoryId: categoryId },
+		order: [['name']],
+	});
+}
+
+async function getCategoriesGames() {
+	const categories = await Category.findAll({
+		order: [[sequelize.literal('RANDOM()')]],
+	});
+	for (let i = 0; i < categories.length; i += 1) {
+		categories[i].dataValues.games = await categories[i].getGames({
+			where: { status: '200' },
+			limit: 10,
+			raw: true,
+		});
+	}
+	const news = await Game.findAll({
+		where: {[Op.or]: [{status: '201'}, {createdAt: {[Op.gte]:new Date().getTime() - 86400000 * 7}}]},
+		order: [['createdAt', 'DESC']],
+	});
+	const twoPlayer = await Game.findAll({
+		where: {multiplayer: 2, status: '200'},
+	});
+	return [
+		{ id: 100, name: "Nouveautés", games: news },
+		...categories,
+		{ id: 101, name: "Deux joueurs", games: twoPlayer },
+	];
+}
+
+async function getGames(req, res) {
+	if (req.query.search) {
+		return getSearchGames(req.query.search);
+	}
+	if (await validateCategory(req) === false) return res.response().code(400);
+
+	if (req.query.categoryId) {
+		return getCategoryGames(req.query.categoryId);
+	}
+
+	return getCategoriesGames();
 }
 
 async function postGame(req, res) {
@@ -60,10 +66,8 @@ async function postGame(req, res) {
 	return Game.findOrCreate({
 		where: { name },
 		defaults: {
-			rules, preview, images, categoryId, multiplayer,
-			visible: false,
-			userId: req.auth.credentials,
+			rules, preview, images, categoryId, multiplayer, userId: req.auth.credentials,
 		},
 	});
 }
-export { getGamesByCategories, getGamesBySearch, postGame };
+export { getGames, postGame };

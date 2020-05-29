@@ -1,41 +1,34 @@
 import Joi from '@hapi/joi';
-import {
-	getGamesByCategories, getGamesBySearch, postGame,
-} from "../controllers/games.js";
+import { getGames, postGame } from "../controllers/games.js";
 
 const games = [
 	{
 		method: 'GET',
-		path: '/list/categories',
-		handler: getGamesByCategories,
-		options: { auth: false },
-	},
-	{
-		method: 'GET',
-		path: '/search/game/{name}',
-		handler: getGamesBySearch,
+		path: '/games',
+		handler: getGames,
 		options: {
 			auth: false,
 			validate: {
-				params: Joi.object({
-					name: Joi.string().min(2).max(50).required(),
+				query: Joi.object({
+					category: Joi.string().min(2).max(50),
+					search: Joi.string().min(2).max(50),
 				}),
 			},
 		},
 	},
 	{
 		method: 'POST',
-		path: '/add/game',
+		path: '/game',
 		handler: postGame,
 		options: {
 			auth: 'jwt',
 			validate: {
-				payload: Joi.object({
+				query: Joi.object({
 					name: Joi.string().min(2).max(50).required(),
 					rules: Joi.string().min(10).max(10000).required(),
 					preview: Joi.string().min(10).max(1000).required(),
 					images: Joi.string().min(1).max(300).required(),
-					categoryId: Joi.number().required(),
+					categoryId: Joi.string().guid({ version: ['uuidv4'] }).required(),
 					multiplayer: Joi.number(),
 				}),
 			},

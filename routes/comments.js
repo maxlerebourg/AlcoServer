@@ -1,31 +1,29 @@
 import Joi from '@hapi/joi';
 import {
 	getGameComment, postGameComment,
-} from "../controllers/comments.js";
-
-const validateId = Joi.object({ id: Joi.number().required() });
+} from '../controllers/comments.js';
 
 const comments = [
 	{
 		method: 'GET',
-		path: '/comments/game/{id}',
+		path: '/comments',
 		handler: getGameComment,
 		options: {
 			auth: false,
 			validate: {
-				params: validateId,
+				query: Joi.object({ id: Joi.number().required() })
 			},
 		},
 	},
 	{
 		method: 'POST',
-		path: '/comment/game/{id}',
+		path: '/comment',
 		handler: postGameComment,
 		options: {
 			auth: 'jwt',
 			validate: {
-				params: validateId,
-				payload: Joi.object({
+				query: Joi.object({
+					id: Joi.number().required(),
 					review: Joi.string().min(5).max(500).required(),
 					rate: Joi.number().required(),
 				}),

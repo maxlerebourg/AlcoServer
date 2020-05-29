@@ -4,7 +4,7 @@ import { login, register, updateNotificationToken } from '../controllers/auth.js
 const auth = [
 	{
 		method: 'POST',
-		path: '/signin',
+		path: '/login',
 		handler: login,
 		options: {
 			auth: false,
@@ -18,7 +18,7 @@ const auth = [
 	},
 	{
 		method: 'POST',
-		path: '/signup',
+		path: '/register',
 		handler: register,
 		options: {
 			auth: false,
@@ -34,25 +34,13 @@ const auth = [
 		},
 	},
 	{
-		method: 'POST',
-		path: '/login',
-		handler: login,
-		options: { auth: false, payload: { multipart: true} },
-	},
-	{
-		method: 'POST',
-		path: '/register',
-		handler: register,
-		options: { auth: false },
-	},
-	{
 		method: 'GET',
-		path: '/notification_id/{token}',
+		path: '/notification',
 		handler: updateNotificationToken,
 		options: {
 			auth: 'jwt',
 			validate: {
-				params: Joi.object({
+				query: Joi.object({
 					token: Joi.string().min(140).max(160).required,
 				}),
 			},
