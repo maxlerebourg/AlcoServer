@@ -30,7 +30,7 @@ const validateAdmin = async function (decoded) {
 
 async function init () {
 	const server = new Hapi.server({
-		port: 3001,
+		port: config.port,
 		host: config.url,
 		routes: {
 			cors: {
