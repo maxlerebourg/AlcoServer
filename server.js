@@ -12,7 +12,19 @@ const validate = async function (decoded) {
 	if (!user) {
 		return { isValid: false };
 	}
-	console.log('User ' + decoded + ' did: ');
+	console.log(`User ${decoded} did:`);
+	return { isValid: true };
+};
+
+const validateAdmin = async function (decoded) {
+	const user = await User.findByPk(decoded);
+	if (!user) {
+		return { isValid: false };
+	}
+	if (!user.admin) {
+		return { isValid: false };
+	}
+	console.log(`Admin ${decoded} did:`);
 	return { isValid: true };
 };
 
@@ -25,16 +37,18 @@ async function init () {
 				origin: [
 					'*'
 				]
-			}
+			},
 		}
 	});
 	await server.register(jwt);
-	server.auth.strategy('jwt', 'jwt',
-		{
-			key: 'NeverShareYourSecret',
-			validate,
-			verifyOptions: { algorithms: [ 'HS256' ] }
-		});
+	const configJWT = {
+		key: config.jwt_mdp,
+		verifyOptions: { algorithms: [ 'HS256' ] }
+	};
+	server.auth.strategy('jwt', 'jwt', {
+		...configJWT,
+		validate,
+	});
 
 	server.auth.default('jwt');
 
