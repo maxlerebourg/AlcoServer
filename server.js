@@ -45,12 +45,14 @@ async function init () {
 		key: config.jwt_mdp,
 		verifyOptions: { algorithms: [ 'HS256' ] }
 	};
-	server.auth.strategy('jwt', 'jwt', {
+	server.auth.strategy('user', 'jwt', {
 		...configJWT,
 		validate,
 	});
-
-	server.auth.default('jwt');
+	server.auth.strategy('admin', 'jwt', {
+		...configJWT,
+		validateAdmin,
+	});
 
 	server.route([
 		...games,

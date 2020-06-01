@@ -20,7 +20,7 @@ const comments = [
 		path: '/comment',
 		handler: postGameComment,
 		options: {
-			auth: 'jwt',
+			auth: 'user',
 			validate: {
 				query: Joi.object({
 					id: Joi.number().required(),

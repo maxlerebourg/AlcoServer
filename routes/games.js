@@ -21,7 +21,7 @@ const games = [
 		path: '/game',
 		handler: postGame,
 		options: {
-			auth: 'jwt',
+			auth: 'user',
 			validate: {
 				query: Joi.object({
 					name: Joi.string().min(2).max(50).required(),

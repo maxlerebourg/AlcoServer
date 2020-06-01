@@ -38,7 +38,7 @@ const auth = [
 		path: '/notification',
 		handler: updateNotificationToken,
 		options: {
-			auth: 'jwt',
+			auth: 'user',
 			validate: {
 				query: Joi.object({
 					token: Joi.string().min(140).max(160).required,
