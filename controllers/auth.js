@@ -1,11 +1,12 @@
 import Jwt from 'jsonwebtoken';
 import { User, Op } from '../models.js';
+import config from '../config.js';
 
 async function login(req, res) {
 	const { mail, password } = req.payload;
 	const { id, pseudo } = await User.findOne({where: {mail, password}});
 	if (id !== undefined) {
-		const jwtToken = Jwt.sign(id, 'NeverShareYourSecret', {algorithm: 'HS256'});
+		const jwtToken = Jwt.sign(id, config.jwt_mdp, {algorithm: 'HS256'});
 		return res.response({
 			id,
 			pseudo,

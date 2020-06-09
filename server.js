@@ -18,10 +18,7 @@ const validate = async function (decoded) {
 
 const validateAdmin = async function (decoded) {
 	const user = await User.findByPk(decoded);
-	if (!user) {
-		return { isValid: false };
-	}
-	if (!user.admin) {
+	if (!user || !user.admin) {
 		return { isValid: false };
 	}
 	console.log(`Admin ${decoded} did:`);
