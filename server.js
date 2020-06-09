@@ -51,7 +51,7 @@ async function init () {
 	});
 	server.auth.strategy('admin', 'jwt', {
 		...configJWT,
-		validateAdmin,
+		validate: validateAdmin,
 	});
 
 	server.route([
