@@ -39,7 +39,7 @@ const games = [
 		path: '/categories',
 		handler: getCategories,
 		options: {
-			auth: 'user',
+			auth: false,
 		},
 	},
 ];
