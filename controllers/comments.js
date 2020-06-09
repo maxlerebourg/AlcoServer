@@ -1,27 +1,34 @@
 import { User, Comment } from '../models.js';
 
 async function getGameComment(req, res) {
-	return Comment.findAll({
-		where: {gameId: req.params.gameId},
+	return await Comment.findAll({
+		where: {gameId: req.query.gameId},
 		include: [{model: User, attributes: {exclude: ['password', 'mail', 'firstname', 'lastname']}}],
 		order: [['updatedAt', 'DESC']],
-		limit: 3
 	})
 }
 
 async function postGameComment(req, res) {
-	return await Comment.upsert({
-			review: req.payload.review,
-			rate: req.payload.rate,
-			gameId: req.params.gameId,
-			userId: req.auth.credentials,
-		},
-		{
+	console.log(req.query)
+	const comment = await Comment.findOne({
 		where: {
-			gameId: req.params.gameId,
+			gameId: req.query.gameId,
 			userId: req.auth.credentials,
 		}
 	});
+	if (comment) {
+		return comment.update({
+			rate: req.query.rate,
+			review: req.query.review,
+		})
+	} else {
+		return Comment.create({
+			gameId: req.query.gameId,
+			userId: req.auth.credentials,
+			rate: req.query.rate,
+			review: req.query.review,
+		})
+	}
 }
 
 export { getGameComment, postGameComment };

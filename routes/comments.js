@@ -11,7 +11,9 @@ const comments = [
 		options: {
 			auth: false,
 			validate: {
-				query: Joi.object({ gameId: Joi.string().guid({ version: ['uuidv4'] }).required() })
+				query: Joi.object({
+					gameId: Joi.string().guid({ version: ['uuidv4'] }).required(),
+				})
 			},
 		},
 	},

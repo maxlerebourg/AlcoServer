@@ -94,6 +94,7 @@ const Comment = sequelize.define('comments', {
 	},
 	gameId: {
 		type: Sequelize.UUID,
+		allowNull: false,
 		references: {
 			model: Game,
 			key: 'id',
