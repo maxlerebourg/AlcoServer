@@ -1,5 +1,5 @@
 import Joi from '@hapi/joi';
-import { getGames, postGame } from "../controllers/games.js";
+import { getGames, postGame, getCategories } from "../controllers/games.js";
 
 const games = [
 	{
@@ -32,6 +32,14 @@ const games = [
 					multiplayer: Joi.number(),
 				}),
 			},
+		},
+	},
+	{
+		method: 'GET',
+		path: '/categories',
+		handler: getCategories,
+		options: {
+			auth: 'user',
 		},
 	},
 ];

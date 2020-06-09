@@ -70,4 +70,9 @@ async function postGame(req, res) {
 		},
 	});
 }
-export { getGames, postGame };
+
+async function getCategories(req, res) {
+	return Category.findAll();
+}
+
+export { getGames, postGame, getCategories };
