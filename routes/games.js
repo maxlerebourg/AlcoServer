@@ -1,5 +1,5 @@
 import Joi from '@hapi/joi';
-import { getGames, postGame, getCategories } from "../controllers/games.js";
+import { getGames, postGame, validGame } from '../controllers/games.js';
 
 const games = [
 	{
@@ -23,23 +23,28 @@ const games = [
 		options: {
 			auth: 'user',
 			validate: {
-				query: Joi.object({
+				payload: Joi.object({
 					name: Joi.string().min(2).max(50).required(),
 					rules: Joi.string().min(10).max(10000).required(),
 					preview: Joi.string().min(10).max(1000).required(),
 					images: Joi.string().min(1).max(300).required(),
-					categoryId: Joi.string().guid({ version: ['uuidv4'] }).required(),
-					multiplayer: Joi.number(),
+					categoryId: Joi.string().guid({ version: ['uuidv4'] }),
+					multiplayer: Joi.number().allow(null),
 				}),
 			},
 		},
 	},
 	{
-		method: 'GET',
-		path: '/categories',
-		handler: getCategories,
+		method: 'POST',
+		path: '/admin/game',
+		handler: validGame,
 		options: {
-			auth: false,
+			auth: 'admin',
+			validate: {
+				payload: Joi.object({
+					gameId: Joi.string().guid({ version: ['uuidv4'] }).required(),
+				}),
+			},
 		},
 	},
 ];

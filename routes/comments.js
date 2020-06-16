@@ -24,7 +24,7 @@ const comments = [
 		options: {
 			auth: 'user',
 			validate: {
-				query: Joi.object({
+				payload: Joi.object({
 					gameId:  Joi.string().guid({ version: ['uuidv4'] }).required(),
 					review: Joi.string().min(5).max(500).required(),
 					rate: Joi.number().required(),

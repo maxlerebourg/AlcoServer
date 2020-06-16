@@ -9,26 +9,22 @@ async function getGameComment(req, res) {
 }
 
 async function postGameComment(req, res) {
-	console.log(req.query)
+	const {rate, review, gameId} = req.payload;
 	const comment = await Comment.findOne({
 		where: {
-			gameId: req.query.gameId,
+			gameId,
 			userId: req.auth.credentials,
 		}
 	});
 	if (comment) {
-		return comment.update({
-			rate: req.query.rate,
-			review: req.query.review,
-		})
-	} else {
-		return Comment.create({
-			gameId: req.query.gameId,
-			userId: req.auth.credentials,
-			rate: req.query.rate,
-			review: req.query.review,
-		})
+		return await comment.update({rate, review });
 	}
+	return await Comment.create({
+		gameId,
+		userId: req.auth.credentials,
+		rate,
+		review,
+	});
 }
 
 export { getGameComment, postGameComment };

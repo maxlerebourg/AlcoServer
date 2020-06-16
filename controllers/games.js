@@ -8,7 +8,8 @@ async function getSearchGames(search) {
 			name: sequelize.where(sequelize.col('name'), 'ILIKE', `%${search}%`),
 			status: '200',
 		},
-		order: ['name']
+		order: ['name'],
+		raw: true,
 	});
 }
 
@@ -19,23 +20,25 @@ async function getCategoryGames(categoryId) {
 	});
 }
 
-async function getCategoriesGames() {
+async function getCategoriesGames(limit) {
 	const categories = await Category.findAll({
 		order: [[sequelize.literal('RANDOM()')]],
 	});
 	for (let i = 0; i < categories.length; i += 1) {
 		categories[i].dataValues.games = await categories[i].getGames({
 			where: { status: '200' },
-			limit: 10,
+			limit,
 			raw: true,
 		});
 	}
 	const news = await Game.findAll({
 		where: {[Op.or]: [{status: '201'}, {createdAt: {[Op.gte]:new Date().getTime() - 86400000 * 7}}]},
 		order: [['createdAt', 'DESC']],
+		raw: true,
 	});
 	const twoPlayer = await Game.findAll({
 		where: {multiplayer: 2, status: '200'},
+		raw: true,
 	});
 	return [
 		{ id: 100, name: "Nouveautés", games: news },
@@ -54,25 +57,32 @@ async function getGames(req, res) {
 		return getCategoryGames(req.query.categoryId);
 	}
 
-	return getCategoriesGames();
+	return getCategoriesGames(10);
 }
 
 async function postGame(req, res) {
 	const {
-		name, rules, preview, images, categoryId, multiplayer
+		name, rules, preview, images, categoryId, multiplayer,
 	} = req.payload;
+
+	const doublon = await Game.findOne({ where: {name}});
+	if (doublon !== null) {
+		return res.response({ status: 'name already taken' }).code(400);
+	}
 	await notifyEveryone(`nouveau jeu disponible : ${name}`);
 
-	return Game.findOrCreate({
-		where: { name },
-		defaults: {
-			rules, preview, images, categoryId, multiplayer, userId: req.auth.credentials,
-		},
+	return Game.create({
+		name, rules, preview, images, multiplayer, categoryId, userId: req.auth.credentials,
 	});
 }
 
-async function getCategories(req, res) {
-	return Category.findAll();
+async function validGame(req, res) {
+	const {gameId: id} = req.payload;
+	return await Game.update({
+		status: '200',
+	}, {
+		where: {id},
+	})
 }
 
-export { getGames, postGame, getCategories };
+export { getGames, postGame, getCategoriesGames, validGame };

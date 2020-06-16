@@ -6,13 +6,14 @@ import { User } from './models.js';
 import games from './routes/games.js';
 import comments from './routes/comments.js';
 import auth from './routes/auth.js';
+import v1 from './routes/v1.js';
 
 const validate = async function (decoded) {
 	const user = await User.findByPk(decoded);
 	if (!user) {
 		return { isValid: false };
 	}
-	console.log(`User ${decoded} did:`);
+	console.log(`User ${user.pseudo} did:`);
 	return { isValid: true };
 };
 
@@ -55,6 +56,7 @@ async function init () {
 		...games,
 		...comments,
 		...auth,
+		...v1,
 	]);
 	await server.start();
 	return server;

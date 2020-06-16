@@ -4,18 +4,17 @@ import config from '../config.js';
 
 async function login(req, res) {
 	const { mail, password } = req.payload;
-	const { id, pseudo } = await User.findOne({where: {mail, password}});
-	if (id !== undefined) {
-		const jwtToken = Jwt.sign(id, config.jwt_mdp, {algorithm: 'HS256'});
-		return res.response({
-			id,
-			pseudo,
-			tokenType: 'JWT',
-			token: 'Bearer ' + jwtToken,
-		});
-	} else {
-		return res.response({ status: 'bad credentials' });
+	const user = await User.findOne({where: {mail, password}, raw: true});
+	if (user === null) {
+		return res.response({ status: 'bad credentials' }).code(400);
 	}
+	const jwtToken = Jwt.sign(user.id, config.jwt_mdp, {algorithm: 'HS256'});
+	return res.response({
+		id: user.id,
+		pseudo: user.pseudo,
+		admin: user.admin,
+		token: 'Bearer ' + jwtToken,
+	});
 }
 
 async function register(req, res) {
@@ -23,11 +22,11 @@ async function register(req, res) {
 		mail, pseudo, password, firstname, lastname,
 	} = req.payload;
 	const user = await User.findOne({where: {[Op.or]: [{ mail }, { pseudo }]}});
-	if (user) return res.response({status: 'Pseudo or mail already taken'});
+	if (user) return res.response({status: 'Pseudo or mail already taken'}).code(400);
 	try {
 		await User.create({ mail, password, firstname, lastname, pseudo, admin: false });
 	} catch (err) {
-		return res.response({ status: 'error' });
+		return res.response({ status: 'error' }).code(400);
 	}
 	return login(req, res)
 }
