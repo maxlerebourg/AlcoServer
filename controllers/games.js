@@ -77,9 +77,10 @@ async function postGame(req, res) {
 }
 
 async function validGame(req, res) {
-	const {gameId: id} = req.payload;
+	console.log(req.payload)
+	const { gameId: id, status, name, preview, rules, images, categoryId, mulitplayer } = req.payload;
 	return await Game.update({
-		status: '200',
+		status, name, preview, rules, images, categoryId, mulitplayer
 	}, {
 		where: {id},
 	})
