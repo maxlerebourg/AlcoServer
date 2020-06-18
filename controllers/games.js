@@ -22,13 +22,13 @@ async function getCategoryGames(categoryId) {
 
 async function getCategoriesGames(limit) {
 	const categories = await Category.findAll({
-		order: [[sequelize.literal('RANDOM()')]],
+		order: [[sequelize.random()]],
 	});
 	for (let i = 0; i < categories.length; i += 1) {
 		categories[i].dataValues.games = await categories[i].getGames({
 			where: { status: '200' },
 			limit,
-			order: [[sequelize.literal('RANDOM()')]],
+			order: [[sequelize.random()]],
 			raw: true,
 		});
 	}
