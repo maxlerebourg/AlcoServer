@@ -28,6 +28,7 @@ async function getCategoriesGames(limit) {
 		categories[i].dataValues.games = await categories[i].getGames({
 			where: { status: '200' },
 			limit,
+			order: [[sequelize.literal('RANDOM()')]],
 			raw: true,
 		});
 	}
@@ -80,7 +81,7 @@ async function validGame(req, res) {
 	console.log(req.payload)
 	const { gameId: id, status, name, preview, rules, images, categoryId, mulitplayer } = req.payload;
 	return await Game.update({
-		status, name, preview, rules, images, categoryId, mulitplayer
+		status, name, preview, rules, images, categoryId, mulitplayer,
 	}, {
 		where: {id},
 	})
