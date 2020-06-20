@@ -24,11 +24,11 @@ const games = [
 			auth: 'user',
 			validate: {
 				payload: Joi.object({
+					categoryId: Joi.string().guid({ version: ['uuidv4'] }).required(),
 					name: Joi.string().min(2).max(50).required(),
 					rules: Joi.string().min(10).max(10000).required(),
 					preview: Joi.string().min(10).max(1000).required(),
 					images: Joi.string().min(1).max(300).required(),
-					categoryId: Joi.string().guid({ version: ['uuidv4'] }).required(),
 					multiplayer: Joi.number().allow(null),
 				}),
 			},
@@ -43,11 +43,11 @@ const games = [
 			validate: {
 				payload: Joi.object({
 					gameId: Joi.string().guid({ version: ['uuidv4'] }).required(),
+					categoryId: Joi.string().guid({ version: ['uuidv4'] }),
 					name: Joi.string().min(2).max(50),
 					rules: Joi.string().min(10).max(10000),
 					preview: Joi.string().min(10).max(1000),
 					images: Joi.string().min(1).max(300),
-					categoryId: Joi.string().guid({ version: ['uuidv4'] }),
 					multiplayer: Joi.number().allow(null),
 					status: Joi.string(),
 				}),
