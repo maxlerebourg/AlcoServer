@@ -63,7 +63,7 @@ async function getGames(req, res) {
 		}
 	}
 
-	return getCategoriesGames(limit);
+	return getCategoriesGames(limit || 10);
 }
 
 async function postGame(req, res) {
