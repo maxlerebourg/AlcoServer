@@ -12,6 +12,7 @@ const games = [
 				query: Joi.object({
 					category: Joi.string().min(2).max(50),
 					search: Joi.string().min(2).max(50),
+					limit: Joi.number().integer().min(0).max(10),
 				}),
 			},
 		},

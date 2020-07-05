@@ -49,16 +49,21 @@ async function getCategoriesGames(limit) {
 }
 
 async function getGames(req, res) {
-	if (req.query.search) {
-		return getSearchGames(req.query.search);
-	}
-	if (await validateCategory(req) === false) return res.response().code(400);
+	const { search, limit, category } = req.query;
 
-	if (req.query.categoryId) {
-		return getCategoryGames(req.query.categoryId);
+	if (search) {
+		return getSearchGames(search);
 	}
 
-	return getCategoriesGames(10);
+	if (category) {
+		if (await validateCategory(req) === false) return res.response().code(400);
+
+		if (req.query.categoryId) {
+			return getCategoryGames(req.query.categoryId);
+		}
+	}
+
+	return getCategoriesGames(limit);
 }
 
 async function postGame(req, res) {
