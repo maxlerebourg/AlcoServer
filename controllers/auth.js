@@ -3,10 +3,13 @@ import { User, Op } from '../models.js';
 import config from '../config.js';
 
 async function login(req, res) {
-	const { mail, password } = req.payload;
+	const { mail, password, token } = req.payload;
 	const user = await User.findOne({where: {mail, password}, raw: true});
 	if (user === null) {
 		return res.response({ status: 'bad credentials' }).code(400);
+	}
+	if (user.notification_id !== token) {
+		await User.update({ token }, { where: { id: user.id } });
 	}
 	const jwtToken = Jwt.sign(user.id, config.jwt_mdp, {algorithm: 'HS256'});
 	return res.response({
