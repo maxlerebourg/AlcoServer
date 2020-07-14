@@ -8,8 +8,9 @@ async function login(req, res) {
 	if (user === null) {
 		return res.response({ status: 'bad credentials' }).code(400);
 	}
+	console.log(user, token)
 	if (user.notification_id !== token) {
-		await User.update({ token }, { where: { id: user.id } });
+		await User.update({ notification_id: token }, { where: { id: user.id } });
 	}
 	const jwtToken = Jwt.sign(user.id, config.jwt_mdp, {algorithm: 'HS256'});
 	return res.response({
