@@ -12,7 +12,7 @@ const auth = [
 				payload: Joi.object({
 					mail: Joi.string().email().required(),
 					password: Joi.string().min(2).max(20).required(),
-					token: Joi.string().min(140).max(160),
+					token: Joi.string(),
 				}),
 			},
 		},
@@ -30,7 +30,7 @@ const auth = [
 					firstname: Joi.string().min(2).max(100).required(),
 					lastname: Joi.string().min(2).max(100).required(),
 					pseudo: Joi.string().min(2).max(50).required(),
-					token: Joi.string().min(140).max(160),
+					token: Joi.string(),
 				}),
 			},
 		},
