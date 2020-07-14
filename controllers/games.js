@@ -44,7 +44,7 @@ async function getCategoriesGames(limit) {
 	const playables = await Game.findAll({
 		where: {
 			status: '200',
-			name: { in: ['Kinito', 'Biskit', 'Tour du Monde', 'Bus', 'Je n\'ai jamais', 'Action ou Verité'] },
+			name: ['Kinito', 'Biskit', 'Tour du Monde', 'Bus', 'Je n\'ai jamais', 'Action ou Verité'],
 		},
 		raw: true,
 	});
