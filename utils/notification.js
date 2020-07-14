@@ -18,7 +18,7 @@ async function notifyAdmin(text) {
 			to: admin.notification_id,
 		}),
 	};
-	fetch('https://fcm.googleapis.com/fcm/send', fcm_send);
+	return fetch('https://fcm.googleapis.com/fcm/send', fcm_send);
 }
 
 async function notifyEveryone(text) {
@@ -37,7 +37,7 @@ async function notifyEveryone(text) {
 			registration_ids: users.map(user => user.notification_id),
 		}),
 	};
-	fetch('https://fcm.googleapis.com/fcm/send', fcm_send);
+	return fetch('https://fcm.googleapis.com/fcm/send', fcm_send);
 }
 
 export { notifyAdmin, notifyEveryone };

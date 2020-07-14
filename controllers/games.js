@@ -33,18 +33,26 @@ async function getCategoriesGames(limit) {
 		});
 	}
 	const news = await Game.findAll({
-		where: {[Op.or]: [{status: '201'}, {createdAt: {[Op.gte]:new Date().getTime() - 86400000 * 7}}]},
-		order: [['createdAt', 'DESC']],
+		where: { [Op.or]: [{ status: '201' }, { createdAt: { [Op.gte]: new Date().getTime() - 86400000 * 7 } }] },
+		order: [ ['createdAt', 'DESC'] ],
 		raw: true,
 	});
 	const twoPlayer = await Game.findAll({
-		where: {multiplayer: 2, status: '200'},
+		where: { multiplayer: 2, status: '200' },
+		raw: true,
+	});
+	const playables = await Game.findAll({
+		where: {
+			status: '200',
+			name: { in: ['Kinito', 'Biskit', 'Tour du Monde', 'Bus', 'Je n\'ai jamais', 'Action ou Verité'] },
+		},
 		raw: true,
 	});
 	return [
 		{ id: 100, name: "Nouveautés", games: news },
+		{ id: 101, name: "Jeux jouable", games: playables },
 		...categories,
-		{ id: 101, name: "Deux joueurs", games: twoPlayer },
+		{ id: 102, name: "Deux joueurs", games: twoPlayer },
 	];
 }
 
