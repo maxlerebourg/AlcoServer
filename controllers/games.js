@@ -24,35 +24,51 @@ async function getCategoriesGames(limit) {
 	const categories = await Category.findAll({
 		order: [[sequelize.random()]],
 	});
+	let news;
+	let twoPlayers;
+	let playables;
+
+	const promises = [];
 	for (let i = 0; i < categories.length; i += 1) {
-		categories[i].dataValues.games = await categories[i].getGames({
-			where: { status: '200' },
-			limit,
-			order: [[sequelize.random()]],
+		promises.push((async () => {
+			categories[i].dataValues.games = await categories[i].getGames({
+				where: { status: '200' },
+				limit,
+				order: [[sequelize.random()]],
+				raw: true,
+			});
+		})())
+	}
+	promises.push((async () => {
+		news = await Game.findAll({
+			where: { [Op.or]: [{ status: '201' }, { createdAt: { [Op.gte]: new Date().getTime() - 86400000 * 7 } }] },
+			order: [ ['createdAt', 'DESC'] ],
 			raw: true,
 		});
-	}
-	const news = await Game.findAll({
-		where: { [Op.or]: [{ status: '201' }, { createdAt: { [Op.gte]: new Date().getTime() - 86400000 * 7 } }] },
-		order: [ ['createdAt', 'DESC'] ],
-		raw: true,
-	});
-	const twoPlayer = await Game.findAll({
-		where: { multiplayer: 2, status: '200' },
-		raw: true,
-	});
-	const playables = await Game.findAll({
-		where: {
-			status: '200',
-			name: ['Kinito', 'Biskit', 'Tour du Monde', 'Bus', 'Je n\'ai jamais', 'Action ou Verité'],
-		},
-		raw: true,
-	});
+	})());
+	promises.push((async () => {
+		twoPlayers = await Game.findAll({
+			where: { multiplayer: 2, status: '200' },
+			raw: true,
+		});
+	})());
+	promises.push((async () => {
+		playables = await Game.findAll({
+			where: {
+				status: '200',
+				name: ['Kinito', 'Biskit', 'Tour du Monde', 'Bus', 'Je n\'ai jamais', 'Action ou Verité'],
+			},
+			raw: true,
+		});
+	})());
+
+	await Promise.all(promises);
+
 	return [
 		{ id: 100, name: "Nouveautés", games: news },
-		{ id: 101, name: "Jeux jouable", games: playables },
+		{ id: 101, name: "Jouables", games: playables },
 		...categories,
-		{ id: 102, name: "Deux joueurs", games: twoPlayer },
+		{ id: 102, name: "Deux joueurs", games: twoPlayers },
 	];
 }
 
