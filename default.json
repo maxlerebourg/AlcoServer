@@ -6,6 +6,7 @@
   "commitMessagePrefix": "fix: :sparkles: TE-000 ",
   "groupName": "all",
   "osvVulnerabilityAlerts": true,
+  "gitAuthor": "renovate@monisnap.com",
   "packageRules": [
     {
       "packagePatterns": ["*"],
