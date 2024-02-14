@@ -9,7 +9,7 @@
   "packageRules": [
     {
       "matchPackagePatterns": ["@monisnap/serverless-moni-obs"],
-      "allowedVersion": ">=1.0.11"
+      "allowedVersions": ">=1.0.11"
     },
     {
       "packagePatterns": ["*"],
