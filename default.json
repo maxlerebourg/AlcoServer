@@ -3,11 +3,11 @@
   "extends": ["config:base", ":npm"],
   "prConcurrentLimit": 4,
   "branchPrefix": "fix/TE-000-",
-  "commitMessagePrefix": "fix: ⬆️ TE-000 ",
+  "commitMessagePrefix": "fix: :arrow-up: TE-000 ",
   "groupName": "all",
   "packageRules": [
     {
-      "matchPackagePatterns": [".*serverless-moni-obs"],
+      "matchPackageNames": ["@monisnap/serverless-moni-obs"],
       "enabled": true
     }
   ]
