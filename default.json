@@ -6,9 +6,6 @@
   "commitMessagePrefix": "fix: ⬆️ TE-000 ",
   "groupName": "all",
   "osvVulnerabilityAlerts": true,
-  "hostRules": {
-    
-  },
   "packageRules": [
     {
       "packagePatterns": ["*"],
