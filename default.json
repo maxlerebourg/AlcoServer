@@ -12,7 +12,7 @@
       "enabled": false
     },
     {
-      "matchPackageNames": ["@monisnap/serverless-moni-obs"],
+      "matchPackagePatterns": [".*serverless-moni-obs"],
       "enabled": true
     }
   ],
