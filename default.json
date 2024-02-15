@@ -8,10 +8,6 @@
   "osvVulnerabilityAlerts": true,
   "packageRules": [
     {
-      "packagePatterns": ["*"],
-      "enabled": false
-    },
-    {
       "matchPackagePatterns": [".*serverless-moni-obs"],
       "enabled": true
     }
