@@ -3,12 +3,5 @@
   "extends": ["config:base", ":npm"],
   "prConcurrentLimit": 4,
   "branchPrefix": "fix/TE-000-",
-  "commitMessagePrefix": "fix: ⬆️ TE-000 ",
-  "groupName": "all",
-  "packageRules": [
-    {
-      "packagePatterns": ["*"],
-      "enabled": true
-    }
-  ]
+  "commitMessagePrefix": "fix: ⬆️ TE-000 "
 }
