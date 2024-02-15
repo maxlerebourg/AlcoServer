@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base"],
+  "extends": ["config:recommended"],
   "prConcurrentLimit": 4,
   "branchPrefix": "fix/TE-000-",
   "commitMessagePrefix": "fix: ⬆️ TE-000 "
