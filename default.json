@@ -5,14 +5,10 @@
   "branchPrefix": "fix/TE-000-",
   "commitMessagePrefix": "fix: ⬆️ TE-000 ",
   "groupName": "all",
-  "osvVulnerabilityAlerts": true,
   "packageRules": [
     {
       "matchPackagePatterns": [".*serverless-moni-obs"],
       "enabled": true
     }
-  ],
-  "vulnerabilityAlerts": {
-    "enabled": true
-  }
+  ]
 }
