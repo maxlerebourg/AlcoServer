@@ -7,7 +7,7 @@
   "groupName": "all",
   "packageRules": [
     {
-      "matchPackageNames": ["@monisnap/serverless-moni-obs"],
+      "packagePatterns": ["*"],
       "enabled": true
     }
   ]
