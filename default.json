@@ -13,7 +13,6 @@
     },
     {
       "matchPackageNames": ["@monisnap/serverless-moni-obs"],
-      "allowedVersions": ">=1.0.11",
       "enabled": true
     }
   ],
