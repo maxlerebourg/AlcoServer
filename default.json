@@ -16,12 +16,9 @@
       "enabled": true
     },
     {
-      "packagePatterns": ["node"],
-      "enabled": true
-    },
-    {
       "packagePatterns": ["npm"],
-      "enabled": true
+      "enabled": true,
+      "allowedVersions": "<=9"
     }
   ],
   "vulnerabilityAlerts": {
