@@ -4,4 +4,16 @@
   "prConcurrentLimit": 4,
   "branchPrefix": "fix/TE-000-",
   "commitMessagePrefix": "fix: ⬆️ TE-000 "
+  "groupName": "all",
+  "osvVulnerabilityAlerts": true,
+  "gitAuthor": "Renovate Moni Bot <renovate@monisnap.com>",
+  "packageRules": [
+    {
+      "packagePatterns": ["*"],
+      "enabled": true
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true
+  }
 }
