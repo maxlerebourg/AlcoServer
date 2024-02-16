@@ -6,6 +6,14 @@
   "commitMessagePrefix": "fix: ⬆️ TE-000 ",
   "groupName": "all",
   "osvVulnerabilityAlerts": true,
+  "hostRules": [
+    {
+      "hostType": "npm",
+      "baseUrl": "https://gitlab.com/api/v4/packages/npm/",
+      "token": "{{ secrets.RENOVATE_TOKEN }}"
+    }
+  ],
+
   "packageRules": [
     {
       "packagePatterns": ["*"],
