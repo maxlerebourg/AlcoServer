@@ -9,6 +9,10 @@
   "packageRules": [
     {
       "packagePatterns": ["*"],
+      "enabled": false
+    },
+    {
+      "packagePatterns": ["@monisnap/serverless-moni-obs"],
       "enabled": true
     }
   ],
