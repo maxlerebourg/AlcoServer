@@ -14,11 +14,6 @@
     {
       "packagePatterns": ["@monisnap/serverless-moni-obs"],
       "enabled": true
-    },
-    {
-      "packagePatterns": ["npm"],
-      "enabled": true,
-      "allowedVersions": "<=9"
     }
   ],
   "vulnerabilityAlerts": {
