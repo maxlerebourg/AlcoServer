@@ -10,10 +10,6 @@
     {
       "packagePatterns": ["*"],
       "enabled": false
-    },
-    {
-      "packagePatterns": ["libphonenumber-js"],
-      "enabled": true
     }
   ],
   "vulnerabilityAlerts": {
