@@ -11,6 +11,10 @@
     {
       "packagePatterns": ["*"],
       "enabled": false
+    },
+    {
+      "packagePatterns": ["uuid"],
+      "enabled": true
     }
   ],
   "vulnerabilityAlerts": {
