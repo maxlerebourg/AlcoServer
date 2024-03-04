@@ -6,6 +6,7 @@
   "commitMessagePrefix": "fix: ⬆️ TE-000 ",
   "groupName": "all",
   "osvVulnerabilityAlerts": true,
+  "assignees": ["monisnap-edouard", "monisnap-jonathan", "monisnap-timothee-dieu", "monisnap-jeremie"],
   "packageRules": [
     {
       "packagePatterns": ["*"],
